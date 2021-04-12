@@ -22,6 +22,8 @@ import {
 } from '../redux/movies/movies-selectors';
 import { getConfigurationBase_url } from '../redux/configuration/configuration-selector';
 import './stylesViews/MoviePage.scss';
+import { getError } from '../redux/error/error-selector';
+import NotFound from '../components/NotFound/NotFound';
 
 const MoviesPage = () => {
   const dispatch = useDispatch();
@@ -33,6 +35,7 @@ const MoviesPage = () => {
   const configUrl = useSelector(getConfigurationBase_url);
   const total_pages = useSelector(getTotalPages);
   const searchQuery = useSelector(getSearchQuery);
+  const error = useSelector(getError);
 
   useEffect(() => {
     if (!searchQuery) return;
@@ -86,6 +89,7 @@ const MoviesPage = () => {
       {shoudRenderMovieList && <MoviesList />}
 
       {isLoading && <Spinner />}
+      {error && <NotFound />}
 
       {shoudRenderButton && (
         <Button onClick={incrementPage} text={'Load More'} />

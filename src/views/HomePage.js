@@ -45,6 +45,7 @@ export default function HomePage() {
 
   useEffect(() => {
     dispatch(SearchQuery(''));
+
     dispatch(trendingMoviesAdd(page));
   }, [dispatch, page]);
 

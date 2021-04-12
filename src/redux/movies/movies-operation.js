@@ -7,7 +7,6 @@ import {
   trendingAddRequest,
   trendingAddSuccess,
   trendingChangePageError,
-  trendingChangePageSuccess,
   trendingLoadMoreSuccess,
   trendingTotalPagesSuccess,
 } from './movies-actions';
@@ -16,6 +15,7 @@ import {
   searchMoviesError,
   SearchQuery,
 } from '../searchMovies/searchMovies-actions';
+import { error } from '../error/error-reducer';
 
 const BASE_URL = 'https://api.themoviedb.org/3/';
 const API_KEY = 'dd5d1869904b4aaed3590a927b3d890c';
@@ -68,12 +68,18 @@ export const fetchSearchMovies = (query, page = 1) => async dispatch => {
       params: { query, page },
     });
 
+    if (results.length === 0) {
+      setTimeout(() => dispatch(error(false)), 3000);
+      dispatch(error(true));
+      dispatch(searchMoviesError());
+      return;
+    }
+
     page === 1
       ? dispatch(trendingAddSuccess(results))
       : dispatch(trendingLoadMoreSuccess(results));
 
     dispatch(SearchQuery(query));
-    // dispatch(trendingChangePageSuccess(1));
     dispatch(trendingTotalPagesSuccess(total_pages));
   } catch (error) {
     dispatch(searchMoviesError(error));
