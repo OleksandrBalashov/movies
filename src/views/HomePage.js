@@ -44,9 +44,7 @@ export default function HomePage() {
   }, [dispatch, configUrl]);
 
   useEffect(() => {
-    dispatch(trendingFirstPageSuccess(1));
     dispatch(SearchQuery(''));
-
     dispatch(trendingMoviesAdd(page));
   }, [dispatch, page]);
 
